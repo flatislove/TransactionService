@@ -41,7 +41,7 @@ public class TransactionController {
     Optional<Transaction> newTransaction(@RequestBody Transaction transaction) {
         BigDecimal ratio = currencyService.getRatioBySymbol(CurrencyEnum.USD.name() + "/" + transaction.getCurrency()).getRate();
         BigDecimal newCount = twelveCurrencyService.getSumOfUsd(transaction.getCurrency(), CurrencyEnum.USD.name(), transaction.getSumOfMoney(), ratio);
-        Optional<Account> account = Optional.ofNullable(accountService.getAccountByOwnerId(transaction.getAccountId()));
+        Optional<Account> account = Optional.ofNullable(accountService.getAccountByOwnerId(transaction.getAccount().getId()));
         Account account1 = null;
         account1 = account.get();
         account1.setBalance(account1.getBalance().subtract(newCount));
@@ -69,7 +69,7 @@ public class TransactionController {
         List<Map<String, Object>> objects = new ArrayList<>();
         List<Transaction> transactions = service.getTransactionsByAccountIdAndStatusFlagTrue(id);
         for (Transaction transaction : transactions) {
-            objects.add(service.getExceededTransactionForAnswer(accountService.getAccountByOwnerId(transaction.getAccountId()), transaction, limitService.getLimitById(transaction.getLimitId())));
+            objects.add(service.getExceededTransactionForAnswer(accountService.getAccountByOwnerId(transaction.getAccount().getId()), transaction, limitService.getLimitById(transaction.getLimitId())));
         }
         return objects;
     }

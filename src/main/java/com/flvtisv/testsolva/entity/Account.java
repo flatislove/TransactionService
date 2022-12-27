@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,5 +26,10 @@ public class Account {
     private String number;
     @Column(name = "balance")
     private BigDecimal balance;
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Limit> limits = new ArrayList<>();
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
+    private List<Transaction> transactions = new ArrayList<>();
+
 
 }

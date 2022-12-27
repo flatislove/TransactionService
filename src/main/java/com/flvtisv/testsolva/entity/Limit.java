@@ -19,8 +19,9 @@ public class Limit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
-    @Column(name = "account_id")
-    private long accountId;
+    @JoinColumn(name = "account_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Account account;
     @Column(name = "limit_op")
     private BigDecimal limit;
     @Column(name = "date_set")
@@ -28,8 +29,8 @@ public class Limit {
     @Column(name = "type_limit")
     private String type;
 
-    public Limit(long accountId, BigDecimal limit, Date dateLimit, String type) {
-        this.accountId = accountId;
+    public Limit(Account account, BigDecimal limit, Date dateLimit, String type) {
+        this.account = account;
         this.limit = limit;
         this.dateLimit = dateLimit;
         this.type = type;

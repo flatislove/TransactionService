@@ -34,8 +34,8 @@ public class AccountController {
     Optional<Account> newAccount(@RequestBody Account account) {
         Optional<Account> account1 = service.save(account);
         if (account1.isPresent()) {
-            Limit newLimitProduct = new Limit(account1.get().getOwnerId(), BigDecimal.ZERO, new Date(), ExpensesType.PRODUCT.name());
-            Limit newLimitService = new Limit(account1.get().getOwnerId(), BigDecimal.ZERO, new Date(), ExpensesType.SERVICE.name());
+            Limit newLimitProduct = new Limit(account1.get(), BigDecimal.ZERO, new Date(), ExpensesType.PRODUCT.name());
+            Limit newLimitService = new Limit(account1.get(), BigDecimal.ZERO, new Date(), ExpensesType.SERVICE.name());
             limitService.save(newLimitService);
             limitService.save(newLimitProduct);
         }

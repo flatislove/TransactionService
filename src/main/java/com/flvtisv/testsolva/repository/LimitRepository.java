@@ -11,7 +11,7 @@ public interface LimitRepository extends CrudRepository<Limit, Long> {
 
 //    @Query("select l from Limit l where l.accountId=:id and l.type=:type")
 
-    @Query("select l from Limit as l where l.accountId=:id and l.type=:type order by l.id DESC limit 1")
+    @Query("select l from Limit as l where l.account.id=:id and l.type=:type order by l.id DESC limit 1")
     Limit getLimitByAccountIdAndType(@Param("id") long accountId, @Param("type") String type);
 
     Limit getLimitById(long id);
