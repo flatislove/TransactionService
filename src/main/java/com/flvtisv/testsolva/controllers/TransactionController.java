@@ -23,11 +23,7 @@ public class TransactionController {
     private final CurrencyService currencyService;
 
     @Autowired
-    public TransactionController(TransactionService service,
-                                 LimitService limitService,
-                                 AccountService accountService,
-                                 TwelveCurrencyService twelveCurrencyService,
-                                 CurrencyService currencyService) {
+    public TransactionController(TransactionService service, LimitService limitService, AccountService accountService, TwelveCurrencyService twelveCurrencyService, CurrencyService currencyService) {
         this.service = service;
         this.limitService = limitService;
         this.accountService = accountService;
@@ -49,13 +45,12 @@ public class TransactionController {
         Account account1 = null;
         account1 = account.get();
         account1.setBalance(account1.getBalance().subtract(newCount));
-        //взять последний лимит
         Limit limit = limitService.getLimitByAccountIdAndType(account1.getOwnerId(), transaction.getType());
         transaction.setLimitId(limit.getId());
         BigDecimal sumTransactions = service.getSumTransactionsById(account1.getOwnerId());
-        System.out.println(sumTransactions + "<----- sum trans");
-        System.out.println(limit.getLimit() + "<---- limit");
-        System.out.println(newCount + "<------ new sum");
+//        System.out.println(sumTransactions + "<----- sum trans");
+//        System.out.println(limit.getLimit() + "<---- limit");
+//        System.out.println(newCount + "<------ new sum");
         int compareResult = limit.getLimit().compareTo((newCount.add(sumTransactions)));
         transaction.setStatusFlag(compareResult < 0);
         transaction.setCurrency(CurrencyEnum.USD.name());
@@ -64,13 +59,13 @@ public class TransactionController {
         return service.save(transaction);
     }
 
-    @GetMapping("/transactions/limitexceeding/{id}")
-    public List<Transaction> getAllExceedingTransactionsById(@PathVariable long id) {
-        return service.getTransactionsByAccountIdAndStatusFlagTrue(id);
-    }
+//    @GetMapping("/transactions/limitexceeding/{id}")
+//    public List<Transaction> getAllExceedingTransactionsById(@PathVariable long id) {
+//        return service.getTransactionsByAccountIdAndStatusFlagTrue(id);
+//    }
 
-    @GetMapping("/transactions/limitex/{id}")
-    public List<Map<String,Object>> getAllExceedingTransactions(@PathVariable long id) {
+    @GetMapping("/transactions/exceeded/{id}")
+    public List<Map<String, Object>> getAllExceedingTransactions(@PathVariable long id) {
         List<Map<String, Object>> objects = new ArrayList<>();
         List<Transaction> transactions = service.getTransactionsByAccountIdAndStatusFlagTrue(id);
         for (Transaction transaction : transactions) {
@@ -78,5 +73,4 @@ public class TransactionController {
         }
         return objects;
     }
-
 }

@@ -30,14 +30,6 @@ public class LimitController {
 
     @PostMapping("/limits/add")
     Optional<Limit> newAccount(@RequestBody Limit limit) {
-//        if (limit!=null){
-//            Optional<Limit> currentLimit = Optional.ofNullable(service.getLimitByAccountIdAndType(limit.getAccountId(), limit.getType()));
-//            if (currentLimit.isPresent()){
-//                currentLimit.get().setLimit(limit.getLimit());
-//                currentLimit.get().setDateLimit(new Date());
-//                return service.save(currentLimit.get());
-//            }
-//        }
         Objects.requireNonNull(limit).setDateLimit(new Date());
         return service.save(limit);
     }

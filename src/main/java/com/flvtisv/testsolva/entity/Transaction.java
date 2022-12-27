@@ -21,6 +21,8 @@ public class Transaction {
     private int Id;
     @Column(name = "account_id")
     private long accountId;
+    @Column(name = "account_to")
+    private String accountTo;
     @Column(name = "type_operation")
     private String type;
     @Column(name = "data_operation")
