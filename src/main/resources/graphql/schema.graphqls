@@ -1,0 +1,67 @@
+type Query{
+    transactions: [Transaction]
+    transactionById(id: ID!): Transaction
+    exceededTransactions(id: ID!): [TransactionExceeded]
+}
+
+type Mutation{
+    addTransaction(transaction: TransactionInput): TransactionAdd
+}
+
+input TransactionInput{
+    accountId:ID!
+    accountTo: String!
+    type: String!
+    currency: String!
+    sumOfMoney: Float!
+}
+
+type TransactionExceeded{
+    id:ID!
+    account_from:String
+    account_to: String
+    currency_shortname: String
+    sum: Float
+    expense_category: String
+    datetime: String
+    limit_sum: Float
+    limit_datetime: String
+    limit_currency_shortname: String
+}
+
+type TransactionAdd{
+    accountId:ID!
+    accountTo: String!
+    type: String!
+    currency: String!
+    sumOfMoney: Float!
+}
+
+type Transaction{
+    id:ID!
+    account: Account
+    accountTo: String!
+    type: String!
+    date: String
+    statusFlag: Boolean
+    limitId: Int
+    currency: String!
+    sumOfMoney: Float!
+}
+
+type Account{
+    id: ID!
+    ownerId: Int
+    number: String
+    balance: Float!
+    limits: [Limit]
+    transactions: [Transaction]
+}
+
+type Limit{
+    id: ID!
+    account: Account!
+    limit: Float!
+    dateLimit: String!
+    type: String!
+}

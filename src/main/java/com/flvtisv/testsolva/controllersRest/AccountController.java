@@ -1,4 +1,4 @@
-package com.flvtisv.testsolva.controllers;
+package com.flvtisv.testsolva.controllersRest;
 
 import com.flvtisv.testsolva.entity.Account;
 import com.flvtisv.testsolva.entity.Limit;
@@ -6,7 +6,10 @@ import com.flvtisv.testsolva.entity.enums.ExpensesType;
 import com.flvtisv.testsolva.service.AccountService;
 import com.flvtisv.testsolva.service.LimitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -32,7 +35,7 @@ public class AccountController {
 
     @PostMapping("/account/add")
     Optional<Account> newAccount(@RequestBody Account account) {
-        Optional<Account> account1 = service.save(account);
+        Optional<Account> account1 = service.save(new Account(account.getOwnerId(), account.getNumber(), account.getBalance()));
         if (account1.isPresent()) {
             Limit newLimitProduct = new Limit(account1.get(), BigDecimal.ZERO, new Date(), ExpensesType.PRODUCT.name());
             Limit newLimitService = new Limit(account1.get(), BigDecimal.ZERO, new Date(), ExpensesType.SERVICE.name());

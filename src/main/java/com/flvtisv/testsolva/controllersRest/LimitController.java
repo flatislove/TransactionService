@@ -1,4 +1,4 @@
-package com.flvtisv.testsolva.controllers;
+package com.flvtisv.testsolva.controllersRest;
 
 import com.flvtisv.testsolva.entity.Limit;
 import com.flvtisv.testsolva.service.LimitService;
@@ -33,5 +33,4 @@ public class LimitController {
         Objects.requireNonNull(limit).setDateLimit(new Date());
         return service.save(limit);
     }
-
 }

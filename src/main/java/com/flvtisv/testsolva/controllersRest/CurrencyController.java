@@ -1,4 +1,4 @@
-package com.flvtisv.testsolva.controllers;
+package com.flvtisv.testsolva.controllersRest;
 
 import com.flvtisv.testsolva.entity.Currency;
 import com.flvtisv.testsolva.service.CurrencyService;

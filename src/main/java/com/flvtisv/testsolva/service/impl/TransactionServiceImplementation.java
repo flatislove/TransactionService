@@ -44,7 +44,7 @@ public class TransactionServiceImplementation implements TransactionService {
         return new BigDecimal("0");
     }
 
-    public List<Transaction> getTransactionsByAccountIdAndStatusFlagTrue(long accountId) {
+    public Iterable<Transaction> getTransactionsByAccountIdAndStatusFlagTrue(long accountId) {
         return transactionRepository.getTransactionsByAccountIdAndStatusFlagTrue(accountId);
     }
 
@@ -65,6 +65,10 @@ public class TransactionServiceImplementation implements TransactionService {
         map.put("limit_currency_shortname", transaction.getCurrency());
 //        System.out.println(map+"<--------------- json");
         return map;
+    }
+
+    public Optional<Transaction> getById(long id){
+        return transactionRepository.findById(id);
     }
 
 //    public JSONObject getJsonObject(long id){

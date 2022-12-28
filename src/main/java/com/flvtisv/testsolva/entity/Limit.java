@@ -2,6 +2,7 @@ package com.flvtisv.testsolva.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,7 +11,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-@Data
 @Entity
 @Builder
 @Table(schema = "public", name = "limits")
@@ -34,5 +34,20 @@ public class Limit {
         this.limit = limit;
         this.dateLimit = dateLimit;
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o != null) {
+            Hibernate.getClass(this);
+            Hibernate.getClass(o);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

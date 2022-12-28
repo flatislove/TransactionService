@@ -43,7 +43,7 @@ public class LimitServiceImplementation implements LimitService {
 
 
     @Override
-    public Limit getLimitByAccountIdAndType(long accountId, String type) {
+    public Optional<Limit> getLimitByAccountIdAndType(long accountId, String type) {
         return limitRepository.getLimitByAccountIdAndType(accountId, type);
     }
 

@@ -11,7 +11,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-@Data
 @Entity
 @Builder
 @Table(schema = "public", name = "currency")
@@ -26,10 +25,6 @@ public class Currency {
     private BigDecimal rate;
     @Column(name = "date_cur")
     private Date date;
-
-    public Currency(BigDecimal rate) {
-        this.rate = rate;
-    }
 
     public Currency(String symbol, BigDecimal rate, String date) {
         this.symbol = symbol;

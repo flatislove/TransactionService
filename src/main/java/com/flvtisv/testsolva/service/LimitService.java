@@ -16,6 +16,6 @@ public interface LimitService {
 
     List<Limit> getAll();
 
-    Limit getLimitByAccountIdAndType(long accountId, String type);
+    Optional<Limit> getLimitByAccountIdAndType(long accountId, String type);
 
 }

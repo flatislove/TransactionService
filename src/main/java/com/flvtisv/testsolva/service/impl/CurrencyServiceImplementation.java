@@ -3,7 +3,6 @@ package com.flvtisv.testsolva.service.impl;
 import com.flvtisv.testsolva.entity.Currency;
 import com.flvtisv.testsolva.repository.CurrencyRepository;
 import com.flvtisv.testsolva.service.CurrencyService;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

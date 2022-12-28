@@ -6,13 +6,11 @@ import org.hibernate.Hibernate;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 @Builder
 @Table(schema = "public", name = "transactions")
@@ -23,7 +21,6 @@ public class Transaction {
     private int Id;
     @JoinColumn(name = "account_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
     private Account account;
     @Column(name = "account_to")
     private String accountTo;
@@ -40,11 +37,24 @@ public class Transaction {
     @Column(name = "amount")
     private BigDecimal sumOfMoney;
 
+    public Transaction(Account account, String accountTo, String type, Date date, boolean statusFlag, long limitId, String currency, BigDecimal sumOfMoney) {
+        this.account = account;
+        this.accountTo = accountTo;
+        this.type = type;
+        this.date = date;
+        this.statusFlag = statusFlag;
+        this.limitId = limitId;
+        this.currency = currency;
+        this.sumOfMoney = sumOfMoney;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Transaction that = (Transaction) o;
+        if (o != null) {
+            Hibernate.getClass(this);
+            Hibernate.getClass(o);
+        }
         return false;
     }
 
