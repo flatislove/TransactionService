@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 public interface TransactionRepository extends CrudRepository<Transaction, Long> {
     Iterable<Transaction> getTransactionsByAccountIdAndStatusFlagTrue(long accountId);
 
-    //    @Query("select sum(t.sumOfMoney) from Transaction t where Transaction.accountId=:id")
     @Query("select sum(t.sumOfMoney) from Transaction t where t.account.id=:id")
     BigDecimal getSumTransactionsById(@Param("id") long id);
 

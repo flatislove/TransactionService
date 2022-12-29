@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,11 +24,11 @@ public class Limit {
     @Column(name = "limit_op")
     private BigDecimal limit;
     @Column(name = "date_set")
-    private Date dateLimit;
+    private String dateLimit;
     @Column(name = "type_limit")
     private String type;
 
-    public Limit(Account account, BigDecimal limit, Date dateLimit, String type) {
+    public Limit(Account account, BigDecimal limit, String dateLimit, String type) {
         this.account = account;
         this.limit = limit;
         this.dateLimit = dateLimit;

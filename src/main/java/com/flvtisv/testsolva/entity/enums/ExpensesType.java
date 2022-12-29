@@ -2,10 +2,10 @@ package com.flvtisv.testsolva.entity.enums;
 
 public enum ExpensesType {
 
-    PRODUCT(0),
+    PRODUCT(),
 
-    SERVICE(1);
+    SERVICE();
 
-    ExpensesType(int i) {
+    ExpensesType() {
     }
 }

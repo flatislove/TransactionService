@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -27,7 +28,7 @@ public class Transaction {
     @Column(name = "type_operation")
     private String type;
     @Column(name = "data_operation")
-    private Date date;
+    private String date;
     @Column(name = "limit_exceeded")
     private boolean statusFlag;
     @Column(name = "limit_id")
@@ -37,11 +38,12 @@ public class Transaction {
     @Column(name = "amount")
     private BigDecimal sumOfMoney;
 
-    public Transaction(Account account, String accountTo, String type, Date date, boolean statusFlag, long limitId, String currency, BigDecimal sumOfMoney) {
+    public Transaction(Account account, String accountTo, String type, boolean statusFlag,
+                       long limitId, String currency, BigDecimal sumOfMoney) {
         this.account = account;
         this.accountTo = accountTo;
         this.type = type;
-        this.date = date;
+        this.date = getFormatDate();
         this.statusFlag = statusFlag;
         this.limitId = limitId;
         this.currency = currency;
@@ -61,5 +63,12 @@ public class Transaction {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @SneakyThrows
+    public String getFormatDate() {
+        String pattern = "yyyy-MM-dd' 'HH:mm:ssX";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        return simpleDateFormat.format(new Date());
     }
 }

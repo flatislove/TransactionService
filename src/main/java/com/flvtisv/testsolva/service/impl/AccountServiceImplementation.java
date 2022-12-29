@@ -6,7 +6,6 @@ import com.flvtisv.testsolva.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,34 +20,23 @@ public class AccountServiceImplementation implements AccountService {
     }
 
     @Override
-    public Optional<Account> updateLimits(Account account, BigDecimal newLimitProduct, BigDecimal newLimitService) {
-        return null;
-    }
-
-    @Override
     public Optional<Account> save(Account account) {
         return Optional.of(accountRepository.save(account));
     }
 
     @Override
-    public Optional<Account> getById(Long id) {
+    public Optional<Account> findById(Long id) {
         return accountRepository.findById(id);
     }
 
     @Override
     public Optional<Account> getAccountByNumber(String number) {
-        System.out.println(number + " <- from impl number");
-        return Optional.ofNullable(accountRepository.getAccountByNumber(number));
+        return accountRepository.getAccountByNumber(number);
     }
 
     @Override
     public List<Account> getAll() {
         return ((List<Account>) accountRepository.findAll());
-    }
-
-    @Override
-    public Account getAccountByOwnerId(long ownerId) {
-        return accountRepository.getAccountByOwnerId(ownerId);
     }
 
 }

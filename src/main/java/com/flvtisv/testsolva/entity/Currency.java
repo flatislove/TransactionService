@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,16 +22,11 @@ public class Currency {
     @Column(name = "rate")
     private BigDecimal rate;
     @Column(name = "date_cur")
-    private Date date;
+    private String date;
 
     public Currency(String symbol, BigDecimal rate, String date) {
         this.symbol = symbol;
         this.rate = rate;
-        this.date = getFormatDate(date);
-    }
-
-    @SneakyThrows
-    public Date getFormatDate(String date) {
-        return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        this.date = date;
     }
 }
