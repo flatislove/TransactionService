@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class LimitServiceImplementation implements LimitService {
+public class LimitServiceImpl implements LimitService {
 
     private final LimitRepository limitRepository;
 
     @Autowired
-    public LimitServiceImplementation(LimitRepository limitRepository) {
+    public LimitServiceImpl(LimitRepository limitRepository) {
         this.limitRepository = limitRepository;
     }
 

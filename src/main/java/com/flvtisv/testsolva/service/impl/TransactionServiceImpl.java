@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TransactionServiceImplementation implements TransactionService {
+public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
 
     @Autowired
-    public TransactionServiceImplementation(TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
 

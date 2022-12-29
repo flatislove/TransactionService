@@ -24,11 +24,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Service
 @EnableScheduling
 @ConditionalOnProperty(name = "scheduler.enabled", matchIfMissing = true)
-public class TwelveCurrencyServiceImplementation implements TwelveCurrencyService {
+public class TwelveCurrencyServiceImpl implements TwelveCurrencyService {
 
     private final CurrencyService service;
 
-    public TwelveCurrencyServiceImplementation(CurrencyService service) {
+    public TwelveCurrencyServiceImpl(CurrencyService service) {
         this.service = service;
     }
 

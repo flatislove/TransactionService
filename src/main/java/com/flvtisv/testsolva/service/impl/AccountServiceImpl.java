@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AccountServiceImplementation implements AccountService {
+public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
 
     @Autowired
-    public AccountServiceImplementation(AccountRepository accountRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
     }
 

@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CurrencyServiceImplementation implements CurrencyService {
+public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyRepository currencyRepository;
 
     @Autowired
-    public CurrencyServiceImplementation(CurrencyRepository currencyRepository) {
+    public CurrencyServiceImpl(CurrencyRepository currencyRepository) {
         this.currencyRepository = currencyRepository;
     }
 

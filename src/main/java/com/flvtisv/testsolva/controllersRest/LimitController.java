@@ -2,8 +2,8 @@ package com.flvtisv.testsolva.controllersRest;
 
 import com.flvtisv.testsolva.entity.Limit;
 import com.flvtisv.testsolva.service.LimitService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RequestMapping("/rest/limits")
 @RestController
-@Api("Controller for working with limits")
+@Tag(name = "Limits", description = "Controller for limits work")
 public class LimitController {
 
     private final LimitService service;
@@ -33,7 +33,7 @@ public class LimitController {
 //        return service.getAll();
 //    }
 
-    @ApiOperation("Adding a new limit")
+    @Operation(summary = "Adding a new limit")
     @PostMapping
     Optional<Limit> addLimit(@RequestBody Limit limit) {
         String pattern = "yyyy-MM-dd' 'HH:mm:ssX";
