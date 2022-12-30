@@ -3,6 +3,7 @@ package com.flvtisv.testsolva.controllersRest;
 import com.flvtisv.testsolva.entity.Currency;
 import com.flvtisv.testsolva.service.CurrencyService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,10 @@ public class CurrencyController {
         this.service = service;
     }
 
+    @Operation(summary = "Getting all currencies", responses = {
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Currency not found")})
     @GetMapping
-    @Operation(summary = "Getting all currencies")
     public ResponseEntity<List<Currency>> getCurrency() {
         List<Currency> currencies = service.getAll();
         return currencies == null || currencies.isEmpty()

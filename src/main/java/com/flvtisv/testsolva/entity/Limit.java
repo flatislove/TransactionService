@@ -1,6 +1,7 @@
 package com.flvtisv.testsolva.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -14,20 +15,26 @@ import java.math.BigDecimal;
 @Entity
 @Builder
 @Table(schema = "public", name = "limits")
+@Schema(description = "Limit")
 public class Limit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @Schema(description = "limit ID")
     private long id;
     @JoinColumn(name = "account_id")
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
+    @Schema(description = "account")
     private Account account;
     @Column(name = "limit_op")
+    @Schema(description = "limit sum")
     private BigDecimal limit;
     @Column(name = "date_set")
+    @Schema(description = "date limit")
     private String dateLimit;
     @Column(name = "type_limit")
+    @Schema(description = "expense category")
     private String type;
 
     public Limit(Account account, BigDecimal limit, String dateLimit, String type) {

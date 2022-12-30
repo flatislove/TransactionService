@@ -4,6 +4,8 @@ import com.flvtisv.testsolva.entity.Limit;
 import com.flvtisv.testsolva.entity.enums.ExpensesType;
 import com.flvtisv.testsolva.service.LimitService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,16 +29,22 @@ public class LimitController {
         this.service = service;
     }
 
-    @Operation(summary = "Getting all limits by account number")
+    @Operation(summary = "Getting all limits by account number", responses = {
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Currency not found")})
     @GetMapping("/{number}")
-    public ResponseEntity<List<Limit>> getLimits(@PathVariable String number) {
+    public ResponseEntity<List<Limit>> getLimits(
+            @Parameter(description = "account number")
+            @PathVariable String number) {
         List<Limit> limits = service.getAllLimitsByNumber(number);
         return limits == null || limits.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
                 : new ResponseEntity<>(limits, HttpStatus.OK);
     }
 
-    @Operation(summary = "Adding a new limit")
+    @Operation(summary = "Adding a new limit", responses = {
+            @ApiResponse(responseCode = "201", description = "Limit created"),
+            @ApiResponse(responseCode = "400", description = "Wrong format or incorrect data")})
     @PostMapping
     ResponseEntity<?> addLimit(@RequestBody Limit limit) {
         if (limit.getLimit() == null || limit.getAccount() == null || limit.getType() == null) {

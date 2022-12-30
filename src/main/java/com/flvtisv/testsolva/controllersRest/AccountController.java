@@ -6,6 +6,8 @@ import com.flvtisv.testsolva.entity.enums.ExpensesType;
 import com.flvtisv.testsolva.service.AccountService;
 import com.flvtisv.testsolva.service.LimitService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,7 +34,9 @@ public class AccountController {
         this.limitService = limitService;
     }
 
-    @Operation(summary = "Getting all accounts and information about them")
+    @Operation(summary = "Getting all accounts and information about them", responses = {
+            @ApiResponse(responseCode = "200", description = "Successful operation"),
+            @ApiResponse(responseCode = "404", description = "Accounts not found")})
     @GetMapping
     public ResponseEntity<List<Account>> getAllAccounts() {
         List<Account> accounts = service.getAll();
@@ -41,7 +45,9 @@ public class AccountController {
                 : new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 
-    @Operation(summary = "Adding a new account")
+    @Operation(summary = "Adding a new account", responses = {
+            @ApiResponse(responseCode = "201", description = "Account created"),
+            @ApiResponse(responseCode = "400", description = "Incorrect number or account exist")})
     @PostMapping
     public ResponseEntity<?> newAccount(@RequestBody Account account) {
         if (account.getNumber().length() != 10 || service.isAccountExist(account.getNumber())) {
@@ -60,9 +66,13 @@ public class AccountController {
         return new ResponseEntity<>(account1, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Deleting an account by number")
+    @Operation(summary = "Deleting an account by number", responses = {
+            @ApiResponse(responseCode = "204", description = "Successful deleted"),
+            @ApiResponse(responseCode = "400", description = "Incorrect number or account not exist")})
     @DeleteMapping(value = "/{number}")
-    public ResponseEntity<?> delete(@PathVariable String number) {
+    public ResponseEntity<?> delete(
+            @Parameter(description = "account number for delete")
+            @PathVariable String number) {
         Optional<Account> account = service.getAccountByNumber(number);
         if (account.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
