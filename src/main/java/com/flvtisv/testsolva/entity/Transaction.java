@@ -1,5 +1,6 @@
 package com.flvtisv.testsolva.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -22,6 +23,7 @@ public class Transaction {
     private int Id;
     @JoinColumn(name = "account_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Account account;
     @Column(name = "account_to")
     private String accountTo;

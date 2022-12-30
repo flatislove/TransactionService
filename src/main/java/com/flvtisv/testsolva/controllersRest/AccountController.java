@@ -5,9 +5,11 @@ import com.flvtisv.testsolva.entity.Limit;
 import com.flvtisv.testsolva.entity.enums.ExpensesType;
 import com.flvtisv.testsolva.service.AccountService;
 import com.flvtisv.testsolva.service.LimitService;
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -18,7 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/rest/accounts")
-//@Api("Controller for displaying and adding customer accounts")
+@Tag(name = "Accounts", description = "Controller for displaying and adding customer accounts")
 public class AccountController {
 
     private final AccountService service;
@@ -30,15 +32,21 @@ public class AccountController {
         this.limitService = limitService;
     }
 
-//    @ApiOperation("Getting all accounts and information about them")
+    @Operation(summary = "Getting all accounts and information about them")
     @GetMapping
-    public List<Account> getAllAccounts() {
-        return service.getAll();
+    public ResponseEntity<List<Account>> getAllAccounts() {
+        List<Account> accounts = service.getAll();
+        return accounts == null || accounts.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
+                : new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 
-//    @ApiOperation("Adding a new account")
+    @Operation(summary = "Adding a new account")
     @PostMapping
-    Optional<Account> newAccount(@RequestBody Account account) {
+    public ResponseEntity<?> newAccount(@RequestBody Account account) {
+        if (account.getNumber().length() != 10 || service.isAccountExist(account.getNumber())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         Optional<Account> account1 = service.save(new Account(account.getOwnerId(), account.getNumber(), account.getBalance()));
         if (account1.isPresent()) {
             String pattern = "yyyy-MM-dd' 'HH:mm:ssX";
@@ -48,7 +56,18 @@ public class AccountController {
             Limit newLimitService = new Limit(account1.get(), BigDecimal.ZERO, date, ExpensesType.SERVICE.name());
             limitService.save(newLimitService);
             limitService.save(newLimitProduct);
+        } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(account1, HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Deleting an account by number")
+    @DeleteMapping(value = "/{number}")
+    public ResponseEntity<?> delete(@PathVariable String number) {
+        Optional<Account> account = service.getAccountByNumber(number);
+        if (account.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return account1;
+        service.delete(account.get());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -1,5 +1,6 @@
 package com.flvtisv.testsolva.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -20,6 +21,7 @@ public class Limit {
     private long id;
     @JoinColumn(name = "account_id")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Account account;
     @Column(name = "limit_op")
     private BigDecimal limit;

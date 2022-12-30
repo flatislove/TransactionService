@@ -9,9 +9,13 @@ public interface AccountService {
 
     Optional<Account> save(Account account);
 
+    void delete(Account account);
+
     Optional<Account> findById(Long id);
 
     Optional<Account> getAccountByNumber(String number);
 
     List<Account> getAll();
+
+    boolean isAccountExist(String number);
 }

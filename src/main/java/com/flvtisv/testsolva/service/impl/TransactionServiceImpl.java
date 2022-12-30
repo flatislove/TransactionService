@@ -46,5 +46,4 @@ public class TransactionServiceImpl implements TransactionService {
     public Optional<Transaction> getById(long id) {
         return transactionRepository.findById(id);
     }
-
 }

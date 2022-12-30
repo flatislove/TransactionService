@@ -38,4 +38,9 @@ public class LimitServiceImpl implements LimitService {
     public Optional<Limit> getLimitByAccountIdAndType(long accountId, String type) {
         return limitRepository.getLimitByAccountIdAndType(accountId, type);
     }
+
+    @Override
+    public List<Limit> getAllLimitsByNumber(String number) {
+        return limitRepository.getAllByAccount_Number(number);
+    }
 }

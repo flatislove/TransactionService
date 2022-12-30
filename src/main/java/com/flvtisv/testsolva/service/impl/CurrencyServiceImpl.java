@@ -24,12 +24,10 @@ public class CurrencyServiceImpl implements CurrencyService {
         return Optional.of(currencyRepository.save(currency));
     }
 
-
     @Override
     public List<Currency> getAll() {
         return (List<Currency>) currencyRepository.findAll();
     }
-
 
     @Override
     public Currency getRatioBySymbol(String currency) {

@@ -25,6 +25,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public void delete(Account account) {
+        accountRepository.delete(account);
+    }
+
+    @Override
     public Optional<Account> findById(Long id) {
         return accountRepository.findById(id);
     }
@@ -39,4 +44,14 @@ public class AccountServiceImpl implements AccountService {
         return ((List<Account>) accountRepository.findAll());
     }
 
+    @Override
+    public boolean isAccountExist(String number) {
+        List<Account> accounts = (List<Account>) accountRepository.findAll();
+        for (Account account : accounts) {
+            if (account.getNumber().equals(number)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

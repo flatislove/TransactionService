@@ -15,4 +15,5 @@ public interface LimitService {
 
     Optional<Limit> getLimitByAccountIdAndType(long accountId, String type);
 
+    List<Limit> getAllLimitsByNumber(String number);
 }
