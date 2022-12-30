@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-accounts
+      author: flvtisv
+      changes:
+        - createTable:
+            tableName: accounts
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: balance
+                  type: numeric(38,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: number
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: owner_id
+                  type: bigint
+                  constraints:
+                    nullable: false

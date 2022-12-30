@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-limits
+      author: flatisv
+      changes:
+        - createTable:
+            tableName: limits
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: date_set
+                  type: varchar(40)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: limit_op
+                  type: numeric(38,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type_limit
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_account_id
+                    references: accounts(id)

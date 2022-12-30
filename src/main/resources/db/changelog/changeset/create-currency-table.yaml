@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-currency
+      author: flvtisv
+      changes:
+        - createTable:
+            tableName: currency
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: date_cur
+                  type: varchar(40)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rate
+                  type: numeric(38,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: symbol
+                  type: varchar(10)
+                  constraints:
+                    nullable: false

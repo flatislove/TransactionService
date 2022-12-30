@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-transactions
+      author: flvtisv
+      changes:
+        - createTable:
+            tableName: transactions
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: account_to
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: data_operation
+                  type: varchar(40)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: limit_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: limit_exceeded
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: numeric(38,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type_operation
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_account_id
+                    references: accounts(id)
