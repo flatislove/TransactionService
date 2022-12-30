@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,10 +51,7 @@ public class LimitController {
         if (!limit.getType().equals(ExpensesType.PRODUCT.name()) && !limit.getType().equals(ExpensesType.SERVICE.name())) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        String pattern = "yyyy-MM-dd' 'HH:mm:ssX";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        String date = simpleDateFormat.format(new Date());
-        Objects.requireNonNull(limit).setDateLimit(date);
+        Objects.requireNonNull(limit).setDateLimit(service.getFormatDate());
         return new ResponseEntity<>(service.save(limit), HttpStatus.CREATED);
     }
 }

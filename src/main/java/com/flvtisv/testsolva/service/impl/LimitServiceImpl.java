@@ -6,6 +6,8 @@ import com.flvtisv.testsolva.service.LimitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,5 +44,12 @@ public class LimitServiceImpl implements LimitService {
     @Override
     public List<Limit> getAllLimitsByNumber(String number) {
         return limitRepository.getAllByAccount_Number(number);
+    }
+
+    @Override
+    public String getFormatDate(){
+        String pattern = "yyyy-MM-dd' 'HH:mm:ssX";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        return simpleDateFormat.format(new Date());
     }
 }
