@@ -1,5 +1,8 @@
 package com.flvtisv.testsolva.controllersGraphql;
 
+import com.flvtisv.testsolva.controllersGraphql.dto.TransactionExceeded;
+import com.flvtisv.testsolva.controllersGraphql.dto.TransactionInput;
+import com.flvtisv.testsolva.controllersGraphql.dto.TransactionView;
 import com.flvtisv.testsolva.entity.Account;
 import com.flvtisv.testsolva.entity.Currency;
 import com.flvtisv.testsolva.entity.Limit;
@@ -20,7 +23,7 @@ import java.util.Optional;
 
 @Controller
 @Tag(name = "Transactions", description = "Controller for adding transactions and displaying exceeded and all transactions")
-public class TransactionControllerGraphql {
+public class TransactionController {
     private final TransactionService transactionService;
     private final LimitService limitService;
     private final TwelveCurrencyService twelveCurrencyService;
@@ -28,9 +31,9 @@ public class TransactionControllerGraphql {
 
     private final AccountService accountService;
 
-    public TransactionControllerGraphql(TransactionService transactionService, AccountService accountService,
-                                        LimitService limitService, TwelveCurrencyService twelveCurrencyService,
-                                        CurrencyService currencyService) {
+    public TransactionController(TransactionService transactionService, AccountService accountService,
+                                 LimitService limitService, TwelveCurrencyService twelveCurrencyService,
+                                 CurrencyService currencyService) {
         this.transactionService = transactionService;
         this.limitService = limitService;
         this.twelveCurrencyService = twelveCurrencyService;
@@ -86,7 +89,7 @@ public class TransactionControllerGraphql {
     @MutationMapping
     @Operation(summary = "Adding transaction")
     TransactionInput addTransaction(@Argument TransactionInput transaction) {
-        if (transaction.account_from().length() != 10 || transaction.account_to.length() != 10) {
+        if (transaction.account_from().length() != 10 || transaction.account_to().length() != 10) {
             throw new IllegalArgumentException("account number \"from\" or \"to\" is wrong");
         }
         if (transaction.currency_shortname() == null || (!transaction.currency_shortname().equals("KZT") && !transaction.currency_shortname().equals("RUB"))) {
@@ -114,18 +117,5 @@ public class TransactionControllerGraphql {
                 exceeded, limit.getId(), CurrencyEnum.USD.name(), newCount);
         transactionService.save(transact);
         return transaction;
-    }
-
-    record TransactionInput(String account_from, String account_to, String currency_shortname, BigDecimal sum,
-                            String expense_category) {
-    }
-
-    record TransactionExceeded(Long id, String account_from, String account_to, String currency_shortname,
-                               BigDecimal sum, String expense_category, String datetime, BigDecimal limit_sum,
-                               String limit_datetime, String limit_currency_shortname) {
-    }
-
-    record TransactionView(Long id, String account_to, String expense_category, String datetime, Boolean limit_exceeded,
-                           Long limit_id, String currency_shortname, BigDecimal sum) {
     }
 }

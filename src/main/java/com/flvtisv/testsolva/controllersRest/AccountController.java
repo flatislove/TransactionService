@@ -15,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,11 +53,8 @@ public class AccountController {
         }
         Optional<Account> account1 = service.save(new Account(account.getOwnerId(), account.getNumber(), account.getBalance()));
         if (account1.isPresent()) {
-            String pattern = "yyyy-MM-dd' 'HH:mm:ssX";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-            String date = simpleDateFormat.format(new Date());
-            Limit newLimitProduct = new Limit(account1.get(), BigDecimal.ZERO, date, ExpensesType.PRODUCT.name());
-            Limit newLimitService = new Limit(account1.get(), BigDecimal.ZERO, date, ExpensesType.SERVICE.name());
+            Limit newLimitProduct = new Limit(account1.get(), BigDecimal.ZERO, service.getFormatDate(), ExpensesType.PRODUCT.name());
+            Limit newLimitService = new Limit(account1.get(), BigDecimal.ZERO, service.getFormatDate(), ExpensesType.SERVICE.name());
             limitService.save(newLimitService);
             limitService.save(newLimitProduct);
         } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

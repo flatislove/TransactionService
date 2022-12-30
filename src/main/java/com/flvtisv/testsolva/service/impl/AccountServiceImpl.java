@@ -6,6 +6,8 @@ import com.flvtisv.testsolva.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,5 +55,12 @@ public class AccountServiceImpl implements AccountService {
             }
         }
         return false;
+    }
+
+    @Override
+    public String getFormatDate(){
+        String pattern = "yyyy-MM-dd' 'HH:mm:ssX";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        return simpleDateFormat.format(new Date());
     }
 }

@@ -18,4 +18,6 @@ public interface AccountService {
     List<Account> getAll();
 
     boolean isAccountExist(String number);
+
+    String getFormatDate();
 }
