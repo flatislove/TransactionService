@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,10 +30,10 @@ public class CurrencyController {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
             @ApiResponse(responseCode = "404", description = "Currency not found")})
     @GetMapping
-    public ResponseEntity<List<Currency>> getCurrency() {
+    public ResponseEntity<List<Currency>> getCurrencies() {
         List<Currency> currencies = service.getAll();
         return currencies == null || currencies.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(currencies, HttpStatus.OK);
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(currencies);
     }
 }

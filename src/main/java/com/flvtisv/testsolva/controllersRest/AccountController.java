@@ -53,10 +53,8 @@ public class AccountController {
         }
         Optional<Account> account1 = service.save(new Account(account.getOwnerId(), account.getNumber(), account.getBalance()));
         if (account1.isPresent()) {
-            Limit newLimitProduct = new Limit(account1.get(), BigDecimal.ZERO, service.getFormatDate(), ExpensesType.PRODUCT.name());
-            Limit newLimitService = new Limit(account1.get(), BigDecimal.ZERO, service.getFormatDate(), ExpensesType.SERVICE.name());
-            limitService.save(newLimitService);
-            limitService.save(newLimitProduct);
+            limitService.save(new Limit(account1.get(), BigDecimal.ZERO, limitService.getFormatDate(), ExpensesType.SERVICE.name()));
+            limitService.save(new Limit(account1.get(), BigDecimal.ZERO, limitService.getFormatDate(), ExpensesType.PRODUCT.name()));
         } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(account1, HttpStatus.CREATED);
     }

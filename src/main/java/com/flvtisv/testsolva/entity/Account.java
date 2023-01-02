@@ -35,10 +35,12 @@ public class Account {
     @JsonIgnore
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @Schema(description = "account limits")
+    @Builder.Default
     private List<Limit> limits = new ArrayList<>();
     @JsonIgnore
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
     @Schema(description = "account transactions")
+    @Builder.Default
     private List<Transaction> transactions = new ArrayList<>();
 
     public Account(long ownerId, String number, BigDecimal balance) {

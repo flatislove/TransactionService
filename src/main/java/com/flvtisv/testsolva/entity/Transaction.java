@@ -7,8 +7,6 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -51,12 +49,12 @@ public class Transaction {
     @Schema(description = "transaction sum")
     private BigDecimal sumOfMoney;
 
-    public Transaction(Account account, String accountTo, String type, boolean statusFlag,
+    public Transaction(Account account, String accountTo, String type, String date, boolean statusFlag,
                        long limitId, String currency, BigDecimal sumOfMoney) {
         this.account = account;
         this.accountTo = accountTo;
         this.type = type;
-        this.date = getFormatDate();
+        this.date = date;
         this.statusFlag = statusFlag;
         this.limitId = limitId;
         this.currency = currency;
@@ -78,10 +76,4 @@ public class Transaction {
         return getClass().hashCode();
     }
 
-    @SneakyThrows
-    public String getFormatDate() {
-        String pattern = "yyyy-MM-dd' 'HH:mm:ssX";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        return simpleDateFormat.format(new Date());
-    }
 }
