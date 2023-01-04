@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import java.math.BigDecimal;
 import java.util.List;
 
-
+//ok
 @ExtendWith(MockitoExtension.class)
 public class CurrencyControllerTest {
     @Mock

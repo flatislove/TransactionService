@@ -2,6 +2,7 @@ package com.flvtisv.testsolva.controllersRest;
 
 import com.flvtisv.testsolva.entity.Account;
 import com.flvtisv.testsolva.entity.Limit;
+import com.flvtisv.testsolva.entity.dto.AccountAdd;
 import com.flvtisv.testsolva.entity.enums.ExpensesType;
 import com.flvtisv.testsolva.service.AccountService;
 import com.flvtisv.testsolva.service.LimitService;
@@ -10,12 +11,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -39,24 +42,26 @@ public class AccountController {
     public ResponseEntity<List<Account>> getAllAccounts() {
         List<Account> accounts = service.getAll();
         return accounts == null || accounts.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                : new ResponseEntity<>(accounts, HttpStatus.OK);
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(accounts);
     }
 
     @Operation(summary = "Adding a new account", responses = {
             @ApiResponse(responseCode = "201", description = "Account created"),
             @ApiResponse(responseCode = "400", description = "Incorrect number or account exist")})
     @PostMapping
-    public ResponseEntity<?> newAccount(@RequestBody Account account) {
-        if (account.getNumber().length() != 10 || service.isAccountExist(account.getNumber())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> newAccount(@RequestBody AccountAdd account, UriComponentsBuilder uriComponentsBuilder) {
+        if (account.getNumber()==null || account.getNumber().length() != 10 || service.isAccountExist(account.getNumber())) {
+            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).build();
         }
         Optional<Account> account1 = service.save(new Account(account.getOwnerId(), account.getNumber(), account.getBalance()));
         if (account1.isPresent()) {
             limitService.save(new Limit(account1.get(), BigDecimal.ZERO, limitService.getFormatDate(), ExpensesType.SERVICE.name()));
             limitService.save(new Limit(account1.get(), BigDecimal.ZERO, limitService.getFormatDate(), ExpensesType.PRODUCT.name()));
-        } else return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(account1, HttpStatus.CREATED);
+        } else return ResponseEntity.badRequest().build();
+        return ResponseEntity.created(uriComponentsBuilder
+                .path("/rest/accounts/{id}").build(Map.of("id",account1.get().getId())))
+                .contentType(MediaType.APPLICATION_JSON).body(account1);
     }
 
     @Operation(summary = "Deleting an account by number", responses = {
@@ -68,9 +73,9 @@ public class AccountController {
             @PathVariable String number) {
         Optional<Account> account = service.getAccountByNumber(number);
         if (account.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
         service.delete(account.get());
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 }
