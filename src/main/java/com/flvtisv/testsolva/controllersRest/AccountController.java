@@ -51,16 +51,16 @@ public class AccountController {
             @ApiResponse(responseCode = "400", description = "Incorrect number or account exist")})
     @PostMapping
     public ResponseEntity<?> newAccount(@RequestBody AccountAdd account, UriComponentsBuilder uriComponentsBuilder) {
-        if (account.getNumber()==null || account.getNumber().length() != 10 || service.isAccountExist(account.getNumber())) {
+        if (account.getNumber()==null || account.getNumber().length() != 10 || service.isAccountExist(account.getNumber())
+        || account.getBalance()==null) {
             return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).build();
         }
-        Optional<Account> account1 = service.save(new Account(account.getOwnerId(), account.getNumber(), account.getBalance()));
-        if (account1.isPresent()) {
-            limitService.save(new Limit(account1.get(), BigDecimal.ZERO, limitService.getFormatDate(), ExpensesType.SERVICE.name()));
-            limitService.save(new Limit(account1.get(), BigDecimal.ZERO, limitService.getFormatDate(), ExpensesType.PRODUCT.name()));
-        } else return ResponseEntity.badRequest().build();
+        Account account1=new Account(account.getOwnerId(), account.getNumber(), account.getBalance());
+        service.save(account1);
+        limitService.save(new Limit(account1, BigDecimal.ZERO, limitService.getFormatDate(), ExpensesType.SERVICE.name()));
+        limitService.save(new Limit(account1, BigDecimal.ZERO, limitService.getFormatDate(), ExpensesType.PRODUCT.name()));
         return ResponseEntity.created(uriComponentsBuilder
-                .path("/rest/accounts/{id}").build(Map.of("id",account1.get().getId())))
+                .path("/rest/accounts/{id}").build(Map.of("id",account1.getId())))
                 .contentType(MediaType.APPLICATION_JSON).body(account1);
     }
 

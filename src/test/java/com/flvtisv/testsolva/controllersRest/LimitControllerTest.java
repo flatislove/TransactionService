@@ -29,12 +29,13 @@ public class LimitControllerTest {
     @InjectMocks
     LimitController controller;
 
+
 //    @Test
 //    void getCurrenciesReturnsValidResponseLimits(){
 //        var currencies = List.of(new Currency("USD/KZT", BigDecimal.valueOf(73.75) ,"2022-12-30"),
 //                new Currency("USD/RUB", BigDecimal.valueOf(462.81) ,"2022-12-30"));
 //
-//        Mockito.doReturn(currencies).when(this.currencyRepository).getAll();
+//        Mockito.doReturn(currencies).when(this.currencyService).getAll();
 //
 //        var response = this.controller.getCurrencies();
 //        Assertions.assertNotNull(response);
@@ -44,7 +45,7 @@ public class LimitControllerTest {
 //    }
 
     @Test
-    void addLimitValidLimitTest(){
+    void addLimitValidTest(){
         LimitAdd limit = new LimitAdd(2L,BigDecimal.valueOf(2000),"SERVICE");
         var responseEntity = this.controller.addLimit(limit, UriComponentsBuilder.fromUriString("http:localhost:8080"));
 
@@ -56,10 +57,8 @@ public class LimitControllerTest {
             Assertions.assertEquals(limit.getLimit(),limitAdd.getLimit());
             Assertions.assertEquals(limit.getType(),limitAdd.getType());
 
-//            Assertions.assertEquals(URI.create("http://localhost:8080/rest/limits"+limitAdd.getId()),
-//                    responseEntity.getHeaders().getLocation()); проверить что выводит
-
-//            Mockito.verify(this.limitService.save(limit));
+//            Assertions.assertEquals(URI.create("http://localhost:8080/rest/limits"+limitAdd.),
+//                    responseEntity.getHeaders().getLocation()); //проверить что выводит
         } else {
             Assertions.assertInstanceOf(Limit.class, responseEntity.getBody());
         }

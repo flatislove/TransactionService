@@ -27,6 +27,7 @@ public class CurrencyControllerIT {
     @Autowired
     CurrencyService currencyService;
 
+
     @AfterEach
     void tearDown(){
         this.currencyService.getAll().clear();
@@ -37,8 +38,8 @@ public class CurrencyControllerIT {
         var requestBuilder = MockMvcRequestBuilders.get("/rest/currency");
         this.currencyService.getAll()
                 .addAll(List.of(
-                        new Currency(1,"USD/RUB", BigDecimal.valueOf(73.75) ,"2022-12-30"),
-                        new Currency(2,"USD/KZT", BigDecimal.valueOf(462.81) ,"2022-12-30")));
+                        new Currency(1,"USD/KZT", BigDecimal.valueOf(465.76) ,"2023-01-04"),
+                        new Currency(2,"USD/RUB", BigDecimal.valueOf(73.40) ,"2023-01-04")));
 
         this.mockMvc.perform(requestBuilder)
                 .andExpectAll(
@@ -48,18 +49,25 @@ public class CurrencyControllerIT {
                                 [
                                     {
                                         "id": 1,
-                                        "symbol": "USD/RUB",
-                                        "rate": 73.75,
-                                        "date": "2022-12-30"
+                                        "symbol": "USD/KZT",
+                                        "rate": 465.76,
+                                        "date": "2023-01-04"
                                     },
                                     {
                                         "id": 2,
-                                        "symbol": "USD/KZT",
-                                        "rate": 462.81,
-                                        "date": "2022-12-30"
+                                        "symbol": "USD/RUB",
+                                        "rate": 73.40,
+                                        "date": "2023-01-04"
                                     }
                                 ]
                                 """)
                 );
+    }
+
+    @Test
+    void getCurrenciesReturnsInvalidResponseCurrencies() throws Exception{
+        var requestBuilder = MockMvcRequestBuilders.get("/rest/currency");
+        this.mockMvc.perform(requestBuilder)
+                .andExpect(status().isNotFound());
     }
 }

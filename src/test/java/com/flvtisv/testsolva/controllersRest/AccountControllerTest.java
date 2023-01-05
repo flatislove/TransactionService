@@ -1,5 +1,7 @@
 package com.flvtisv.testsolva.controllersRest;
 
+import com.flvtisv.testsolva.entity.Account;
+import com.flvtisv.testsolva.entity.Limit;
 import com.flvtisv.testsolva.entity.dto.AccountAdd;
 import com.flvtisv.testsolva.service.AccountService;
 import com.flvtisv.testsolva.service.LimitService;
@@ -10,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
@@ -26,49 +29,28 @@ public class AccountControllerTest {
     @InjectMocks
     AccountController controller;
 
-//    @Test
-//    void getCurrenciesReturnsValidResponseLimits(){
-//        var currencies = List.of(new Currency("USD/KZT", BigDecimal.valueOf(73.75) ,"2022-12-30"),
-//                new Currency("USD/RUB", BigDecimal.valueOf(462.81) ,"2022-12-30"));
-//
-//        Mockito.doReturn(currencies).when(this.currencyRepository).getAll();
-//
-//        var response = this.controller.getCurrencies();
-//        Assertions.assertNotNull(response);
-//        Assertions.assertEquals(HttpStatus.OK,response.getStatusCode());
-//        Assertions.assertEquals(MediaType.APPLICATION_JSON,response.getHeaders().getContentType());
-//        Assertions.assertEquals(currencies, response.getBody());
-//    }
-
     @Test
-    void addValidAccountTest(){
+    void newAccountValidTest(){
+        AccountAdd accountAdd = new AccountAdd(2L,"3333333333",BigDecimal.valueOf(230000));
+        var responseEntity = controller.newAccount(accountAdd, UriComponentsBuilder.fromUriString("http:localhost:8080"));
 
-        AccountAdd account = new AccountAdd(20L,"2221113339",BigDecimal.valueOf(2000000));
-        var responseEntity = this.controller.newAccount(account, UriComponentsBuilder.fromUriString("http://localhost:8080"));
-        System.out.println(responseEntity);
+        System.out.println(responseEntity.getBody());
         Assertions.assertNotNull(responseEntity);
-//        Assertions.assertEquals(HttpStatus.CREATED,responseEntity.getStatusCode());
-
-
-
-//        Assertions.assertEquals(MediaType.APPLICATION_JSON,responseEntity.getHeaders().getContentType());
-//        if (responseEntity.getBody() instanceof Account account1){
-//            Assertions.assertEquals(account.getOwnerId(),account1.getOwnerId());
-//            Assertions.assertEquals(account.getNumber(),account1.getNumber());
-//            Assertions.assertEquals(account.getBalance(),account1.getBalance());
-//
-//            Assertions.assertEquals(URI.create("http://localhost:8080/rest/accounts"+account.getId()),
-//                    responseEntity.getHeaders().getLocation());
-//
-//            Mockito.verify(this.accountService.save(account));
-//        } else {
-//            Assertions.assertInstanceOf(Account.class, responseEntity.getBody());
-//        }
+        Assertions.assertEquals(HttpStatus.CREATED,responseEntity.getStatusCode());
+        Assertions.assertEquals(MediaType.APPLICATION_JSON,responseEntity.getHeaders().getContentType());
+        if (responseEntity.getBody() instanceof Account account){
+            Assertions.assertEquals(accountAdd.getOwnerId(),account.getOwnerId());
+            Assertions.assertEquals(accountAdd.getBalance(),account.getBalance());
+            Assertions.assertEquals(accountAdd.getNumber(),account.getNumber());
+        } else {
+            Assertions.assertInstanceOf(Limit.class, responseEntity.getBody());
+        }
     }
+
 
     @Test
     void addInvalidTypeNullAccountTest(){
-        AccountAdd account = new AccountAdd(3L,"3334445556",null);
+        AccountAdd account = new AccountAdd(3L,null,BigDecimal.valueOf(200000));
         var responseEntity = this.controller.newAccount(account, UriComponentsBuilder.fromUriString("http:localhost:8080"));
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST,responseEntity.getStatusCode());
@@ -80,6 +62,5 @@ public class AccountControllerTest {
         var responseEntity = this.controller.newAccount(account, UriComponentsBuilder.fromUriString("http:localhost:8080"));
         System.out.println(responseEntity.toString());
         Assertions.assertEquals(HttpStatus.BAD_REQUEST,responseEntity.getStatusCode());
-//        Mockito.verifyNoInteractions(accountService);
     }
 }
