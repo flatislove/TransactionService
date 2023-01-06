@@ -33,8 +33,6 @@ public class AccountControllerTest {
     void newAccountValidTest(){
         AccountAdd accountAdd = new AccountAdd(2L,"3333333333",BigDecimal.valueOf(230000));
         var responseEntity = controller.newAccount(accountAdd, UriComponentsBuilder.fromUriString("http:localhost:8080"));
-
-        System.out.println(responseEntity.getBody());
         Assertions.assertNotNull(responseEntity);
         Assertions.assertEquals(HttpStatus.CREATED,responseEntity.getStatusCode());
         Assertions.assertEquals(MediaType.APPLICATION_JSON,responseEntity.getHeaders().getContentType());
@@ -47,12 +45,10 @@ public class AccountControllerTest {
         }
     }
 
-
     @Test
     void addInvalidTypeNullAccountTest(){
         AccountAdd account = new AccountAdd(3L,null,BigDecimal.valueOf(200000));
         var responseEntity = this.controller.newAccount(account, UriComponentsBuilder.fromUriString("http:localhost:8080"));
-
         Assertions.assertEquals(HttpStatus.BAD_REQUEST,responseEntity.getStatusCode());
     }
 

@@ -26,7 +26,7 @@ public class LimitControllerIT {
 
     @Test
     void getLimitsTest() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8080/rest/limits/2222222238")
+        mockMvc.perform(MockMvcRequestBuilders.get("/rest/limits/2222222238")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content()
@@ -43,7 +43,7 @@ public class LimitControllerIT {
 
     @Test
     void getLimitsInvalidNumberTest() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8080/rest/limits/2222222235")
+        mockMvc.perform(MockMvcRequestBuilders.get("/rest/limits/2222222235")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -51,7 +51,7 @@ public class LimitControllerIT {
     @Test
     void addLimitValidTest() throws Exception{
         LimitAdd limit = new LimitAdd(4L, BigDecimal.valueOf(400),"PRODUCT");
-        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/rest/limits")
+        mockMvc.perform(MockMvcRequestBuilders.post("/rest/limits")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(limit)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
@@ -62,7 +62,7 @@ public class LimitControllerIT {
     @Test
     void addLimitInvalidTypeTest() throws Exception{
         LimitAdd limit = new LimitAdd(4L, BigDecimal.valueOf(400),null);
-        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/rest/limits")
+        mockMvc.perform(MockMvcRequestBuilders.post("/rest/limits")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(limit)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -73,7 +73,7 @@ public class LimitControllerIT {
     @Test
     void addLimitOtherTypeTest() throws Exception{
         LimitAdd limit = new LimitAdd(4L, BigDecimal.valueOf(400),"SPORT");
-        mockMvc.perform(MockMvcRequestBuilders.post("http://localhost:8080/rest/limits")
+        mockMvc.perform(MockMvcRequestBuilders.post("/rest/limits")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(limit)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())

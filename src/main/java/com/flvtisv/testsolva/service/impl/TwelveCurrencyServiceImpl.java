@@ -6,6 +6,8 @@ import com.flvtisv.testsolva.service.CurrencyService;
 import com.flvtisv.testsolva.service.TwelveCurrencyService;
 import lombok.SneakyThrows;
 import org.json.JSONObject;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +20,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Objects;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.scheduling.annotation.EnableScheduling;
-
 @Service
 @EnableScheduling
 @ConditionalOnProperty(name = "scheduler.enabled", matchIfMissing = true)
 public class TwelveCurrencyServiceImpl implements TwelveCurrencyService {
 
+    private String key = "876a39378ce14a2393c8977f1127f025";
     private final CurrencyService service;
 
     public TwelveCurrencyServiceImpl(CurrencyService service) {
@@ -33,19 +33,15 @@ public class TwelveCurrencyServiceImpl implements TwelveCurrencyService {
     }
 
     @SneakyThrows
-//    @Scheduled(fixedRate = 10000)
     @Scheduled(cron = "@daily")
     public void getRatioUsdKzt() {
-        String key = "876a39378ce14a2393c8977f1127f025";
         URL url = new URL("https://api.twelvedata.com/time_series?symbol=USD/KZT&interval=1day&apikey=" + key);
         connect(url);
     }
 
     @SneakyThrows
-//    @Scheduled(fixedRate = 6000)
     @Scheduled(cron = "@daily")
     public void getRatioUsdRub() {
-        String key = "876a39378ce14a2393c8977f1127f025";
         URL url = new URL("https://api.twelvedata.com/time_series?symbol=USD/RUB&interval=1day&apikey=" + key);
         connect(url);
     }
@@ -77,7 +73,7 @@ public class TwelveCurrencyServiceImpl implements TwelveCurrencyService {
         } else if (Objects.equals(currencies.toString(), CurrencyEnum.USD.name() + "/" + CurrencyEnum.RUB.name())) {
             return sum.divide(ratio, 4, RoundingMode.HALF_DOWN);
         } else if (Objects.equals(currencies.toString(), CurrencyEnum.USD.name() + "/" + CurrencyEnum.USD.name())) {
-            return sum;
+            return sum.setScale(4,RoundingMode.HALF_DOWN);
         } else {
             return BigDecimal.valueOf(-1);
         }

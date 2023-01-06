@@ -1,11 +1,10 @@
 package com.flvtisv.testsolva.service.impl;
 
 import com.flvtisv.testsolva.entity.Account;
-import com.flvtisv.testsolva.repository.AccountRepository;
+import com.flvtisv.testsolva.service.AccountService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,16 +16,13 @@ import java.util.List;
 public class AccountServiceImplTest {
 
     @Mock
-    private AccountRepository accountRepository;
-
-    @InjectMocks
-    private AccountServiceImpl accountService;
+    private AccountService accountService;
 
     @Test
     public void shouldReturnIsAccountExist(){
         String number = "1212121212";
         List<Account> accounts = getAccounts();
-        Mockito.when(accountRepository.findAll()).thenReturn(accounts);
+        Mockito.when(accountService.getAll()).thenReturn(accounts);
         boolean isExistFirst=accountService.isAccountExist(number);
         Assertions.assertTrue(isExistFirst);
         String number2 = "2222221212";
